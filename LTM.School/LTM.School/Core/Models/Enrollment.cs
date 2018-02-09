@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LTM.School.App.enumsType;
 
 namespace LTM.School.Core.Models
 {
@@ -10,8 +11,11 @@ namespace LTM.School.Core.Models
     /// </summary>
     public class Enrollment
     {
-        public int EnrollmentId { get; set; }
-        public int StudentId { get; set; }
-        public int CouseId { get; set; }
+        public int EnrollmentID { get; set; }
+        public int CourseID { get; set; }
+        public int StudentID { get; set; }
+        public CourseGrade? Grade{get;set;}
+        public Course Course { get; set; }
+        public Student Student { get; set; }
     }
 }

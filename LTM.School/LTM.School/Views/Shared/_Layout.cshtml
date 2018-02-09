@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LTM.School</title>
 
-    <environment include="Development">
+    <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
-    <environment exclude="Development">
+    <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -30,13 +31,12 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">首页</a></li>
-                    <li><a asp-area="" asp-controller="Students" asp-action="Index">学生信息</a></li>
-                    <li><a asp-area="" asp-controller="Courses" asp-action="Index">课程信息</a></li>
-                    <li><a asp-area="" asp-controller="Instructors" asp-action="Index">教师信息</a></li>
-                    <li><a asp-area="" asp-controller="Departments" asp-action="Index">部门管理</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">主页</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">关于</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">联系</a></li>
+                    <li><a asp-area="" asp-controller="Students" asp-action="Index">学生管理</a></li>
+                    <li><a asp-area="" asp-controller="Courses" asp-action="Index">课程管理</a></li>
+                    <li><a asp-area="" asp-controller="Instructors" asp-action="Index">教师管理</a></li>
+                    <li><a asp-area="" asp-controller="Departments" asp-action="Index">部门管理</a></li>
                 </ul>
             </div>
         </div>
@@ -49,12 +49,12 @@
         </footer>
     </div>
 
-    <environment include="Development">
+    <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
-    <environment exclude="Development">
+    <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"

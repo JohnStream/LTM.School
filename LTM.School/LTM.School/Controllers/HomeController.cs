@@ -4,7 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LTM.School.Models;
+using LTM.School.Core.Models;
+using LTM.School.App.ViewModle;
 
 namespace LTM.School.Controllers
 {

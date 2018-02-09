@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LTM.School.Core.Models
 {
@@ -11,10 +12,10 @@ namespace LTM.School.Core.Models
     /// </summary>
     public class Course
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int CourseID { get; set; }
         public string Title { get; set; }
         public int Credits { get; set; }
-        public CourseGrade Grade {get;set;}
         public ICollection<Enrollment> Enrollments { get; set; }
     }
 }
