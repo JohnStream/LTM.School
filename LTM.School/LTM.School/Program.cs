@@ -14,27 +14,30 @@ namespace LTM.School
 {
     public class Program
     {
+        
         public static void Main(string[] args)
-{
-    var host = BuildWebHost(args);
-
-    using (var scope = host.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        try
         {
-            var context = services.GetRequiredService<SchoolContext>();
-            DbInitializer.Initialize(context);
-        }
-        catch (Exception ex)
-        {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "An error occurred while seeding the database.");
-        }
-    }
+            var host = BuildWebHost(args);
 
-    host.Run();
-}
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    //从依赖关系注入容器中获取的数据库上下文实例。
+                    var context = services.GetRequiredService<SchoolContext>();
+                    //初始化种子数据
+                    DbInitializer.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while seeding the database.");
+                }
+            }
+
+            host.Run();
+        }
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()

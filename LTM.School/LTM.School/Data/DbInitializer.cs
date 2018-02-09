@@ -96,31 +96,31 @@ namespace LTM.School.Data
             {
                 new Enrollment
                 {
-                    StudentID = students.Single(s => s.RealName == "龙傲天").ID,
+                    StudentID = students.Single(s => s.RealName == "王尼玛").ID,
                     CourseID = courses.Single(c => c.Title == "数学").CourseID,
                     Grade = CourseGrade.Excellent
                 },
                 new Enrollment
                 {
-                    StudentID = students.Single(s => s.RealName == "龙傲天").ID,
+                    StudentID = students.Single(s => s.RealName == "王尼玛").ID,
                     CourseID = courses.Single(c => c.Title == "政治").CourseID,
                     Grade = CourseGrade.Bad
                 },
                 new Enrollment
                 {
-                    StudentID = students.Single(s => s.RealName == "龙傲天").ID,
+                    StudentID = students.Single(s => s.RealName == "富贵").ID,
                     CourseID = courses.Single(c => c.Title == "物理").CourseID,
                     Grade = CourseGrade.Good
                 },
                 new Enrollment
                 {
-                    StudentID = students.Single(s => s.RealName == "王尼玛").ID,
+                    StudentID = students.Single(s => s.RealName == "富贵").ID,
                     CourseID = courses.Single(c => c.Title == "物理").CourseID,
                     Grade = CourseGrade.Great
                 },
                 new Enrollment
                 {
-                    StudentID = students.Single(s => s.RealName == "王尼玛").ID,
+                    StudentID = students.Single(s => s.RealName == "富贵").ID,
                     CourseID = courses.Single(c => c.Title == "化学").CourseID
                 },
                 new Enrollment

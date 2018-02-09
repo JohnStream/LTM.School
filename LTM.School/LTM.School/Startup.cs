@@ -42,7 +42,7 @@ namespace LTM.School
             }
 
             app.UseStaticFiles();
-
+            // router data
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
