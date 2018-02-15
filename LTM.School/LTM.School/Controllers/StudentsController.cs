@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using LTM.School.Core.Models;
 using LTM.School.Data;
 using Microsoft.EntityFrameworkCore;
+using LTM.School.App.Dtos;
+
 namespace LTM.School.Controllers
 {
     public class StudentsController : Controller
@@ -40,6 +42,38 @@ namespace LTM.School.Controllers
             }
 
             return View(student);
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(StudentDto dto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var entity = new Student
+                    {
+                        RealName = dto.RealName,
+                        EnrollmentDate = dto.EnrollmentDate
+                    };
+
+
+                    _context.Add(entity);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                ModelState.AddModelError("", "无法进行数据的保存，请仔细检查你的数据，是否异常。");
+            }
+
+            return View(dto);
         }
     }
 }
