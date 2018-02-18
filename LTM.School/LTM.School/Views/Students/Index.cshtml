@@ -1,11 +1,17 @@
-@model IEnumerable<LTM.School.Core.Models.Student>
+﻿@model IEnumerable<LTM.School.Core.Models.Student>
 
 @{
-    ViewData["Title"] = "Index";
+    Layout = null;
 }
 
-<h2>Index</h2>
+<!DOCTYPE html>
 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -24,7 +30,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            
             <td>
                 @Html.DisplayFor(modelItem => item.RealName)
             </td>
@@ -40,3 +45,5 @@
 }
     </tbody>
 </table>
+</body>
+</html>

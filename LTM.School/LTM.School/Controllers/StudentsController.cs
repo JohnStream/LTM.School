@@ -1,12 +1,12 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using LTM.School.Core.Models;
 using LTM.School.Data;
-using Microsoft.EntityFrameworkCore;
 using LTM.School.App.Dtos;
 
 namespace LTM.School.Controllers
@@ -19,10 +19,17 @@ namespace LTM.School.Controllers
         {
             _context = context;
         }
+
+
+        #region å­¦ç”Ÿåˆ—è¡¨
         public async Task<IActionResult> Index()
         {
             return View(await _context.Students.ToListAsync());
-        }
+        } 
+        #endregion
+
+
+        #region å­¦ç”Ÿè¯¦æƒ…
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,12 +37,8 @@ namespace LTM.School.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .Include(s => s.Enrollments)
-                    .ThenInclude(e => e.Course)
-                .AsNoTracking()
+            var student = await _context.Students.Include(a => a.Enrollments).ThenInclude(e => e.Course).AsNoTracking()
                 .SingleOrDefaultAsync(m => m.ID == id);
-
             if (student == null)
             {
                 return NotFound();
@@ -43,10 +46,18 @@ namespace LTM.School.Controllers
 
             return View(student);
         }
+        #endregion
+
+
+        #region è¿”å›åˆ›å»ºè§†å›¾ 
         public IActionResult Create()
         {
             return View();
         }
+        #endregion
+
+
+        #region ä¿®æ”¹åˆ›å»ºæ–¹æ³•ï¼Œé˜²æ­¢CSRF
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StudentDto dto)
@@ -55,25 +66,105 @@ namespace LTM.School.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var entity = new Student
+                    var entity = new StudentDto
                     {
                         RealName = dto.RealName,
                         EnrollmentDate = dto.EnrollmentDate
                     };
-
-
                     _context.Add(entity);
                     await _context.SaveChangesAsync();
-
                     return RedirectToAction(nameof(Index));
                 }
             }
+           
             catch (DbUpdateException ex)
             {
-                ModelState.AddModelError("", "ÎŞ·¨½øĞĞÊı¾İµÄ±£´æ£¬Çë×ĞÏ¸¼ì²éÄãµÄÊı¾İ£¬ÊÇ·ñÒì³£¡£");
+                ModelState.AddModelError("", "æ— æ³•è¿›è¡Œæ•°æ®çš„ä¿å­˜ï¼Œè¯·ä»”ç»†æ£€æŸ¥ä½ çš„æ•°æ®ï¼Œæ˜¯å¦å¼‚å¸¸ã€‚");
             }
 
             return View(dto);
+        } 
+        #endregion
+
+        // GET: Students/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students.SingleOrDefaultAsync(m => m.ID == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ID,RealName,EnrollmentDate")] Student student)
+        {
+            if (id != student.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(student);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StudentExists(student.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(student);
+        }
+
+        // GET: Students/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students
+                .SingleOrDefaultAsync(m => m.ID == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
+        // POST: Students/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var student = await _context.Students.SingleOrDefaultAsync(m => m.ID == id);
+            _context.Students.Remove(student);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool StudentExists(int id)
+        {
+            return _context.Students.Any(e => e.ID == id);
         }
     }
 }
