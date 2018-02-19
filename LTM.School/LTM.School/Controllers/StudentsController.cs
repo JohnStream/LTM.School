@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LTM.School.Core.Models;
 using LTM.School.Data;
 using LTM.School.App.Dtos;
+using LTM.School.Common;
 
 namespace LTM.School.Controllers
 {
@@ -19,13 +20,66 @@ namespace LTM.School.Controllers
         {
             _context = context;
         }
-
-
-        #region 学生列表
-        public async Task<IActionResult> Index()
+        #region 搜索和排序
+        public async Task<IActionResult> Index(string sortOrder, string searchStudent, int? page, string currentStudent)
         {
-            return View(await _context.Students.ToListAsync());
-        } 
+            #region   
+
+            //姓名的排序参数
+            ViewData["Name_Sort_Parm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            //时间的排序参数
+            ViewData["Date_Sort_Parm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            //搜索的关键字
+            ViewData["SearchStudent"] = searchStudent;
+
+            #endregion
+
+            ViewData["CurrentSort"] = sortOrder;
+
+
+            if (searchStudent != null)
+                page = 1;
+            else
+                searchStudent = currentStudent;
+
+            #region 搜索和排序功能
+
+            var students = from student in _context.Students select student;
+
+            if (!string.IsNullOrWhiteSpace(searchStudent))
+                students = students.Where(a => a.RealName.Contains(searchStudent));
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(a => a.RealName);
+                    break;
+
+                case "Date":
+                    students = students.OrderBy(a => a.EnrollmentDate);
+                    break;
+
+                case "date_desc":
+                    students = students.OrderByDescending(a => a.EnrollmentDate);
+                    break;
+
+                default:
+                    students = students.OrderBy(a => a.RealName);
+                    break;
+            }
+
+            #endregion
+
+            var pageSize = 5;
+
+
+            var entities = students.AsNoTracking();
+
+            var dtos = await PaginatedList<Student>.CreatepagingAsync(entities, page ?? 1, pageSize);
+
+            return View(dtos);
+        }
         #endregion
 
 
